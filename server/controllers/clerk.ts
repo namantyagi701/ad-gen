@@ -1,23 +1,23 @@
 import { Request, Response } from "express"
 import { verifyWebhook } from '@clerk/express/webhooks'
-import {prisma} from '../configs/prisma.js'
-
+import { prisma } from '../configs/prisma.js'
 
 const clerkWebhooks = async (req: Request, res: Response) => {
     console.log("Webhook request received")
-    let type = "unknown";
+
+    const signingSecret = process.env.CLERK_WEBHOOK_SIGNING_SECRET?.trim();
+
+    if (!signingSecret) {
+        return res.status(500).json({ message: "Missing CLERK_WEBHOOK_SIGNING_SECRET in server environment" })
+    }
+
     try {
-        const signingSecret = process.env.CLERK_WEBHOOK_SIGNING_SECRET?.trim()
-        if (!signingSecret) {
-            return res.status(500).json({ message: "Missing CLERK_WEBHOOK_SIGNING_SECRET in server environment" })
-        }
+        const evt = await verifyWebhook(req, { signingSecret });
 
-        const evt: any = await verifyWebhook(req, { signingSecret })
         //get data from request
-        const { data, type: eventType } = evt;
-        type = eventType;
+        const { data, type } = evt;
 
-        switch (eventType) {
+        switch (type) {
             case "user.created": {
                 await prisma.user.create({
                     data: {
@@ -29,6 +29,7 @@ const clerkWebhooks = async (req: Request, res: Response) => {
                 })
                 break;
             }
+
             case "user.updated": {
                 await prisma.user.update({
                     where: {
@@ -43,49 +44,44 @@ const clerkWebhooks = async (req: Request, res: Response) => {
                 break;
             }
 
-
-
             case "user.deleted": {
-                await prisma.user.deleteMany({ where: { id: data.id } })
+                await prisma.user.delete({ where: { id: data.id } })
                 break;
             }
+
             case "paymentAttempt.updated": {
                 if ((data.charge_type === "recurring" || data.charge_type === "checkout") && data.status === 'paid') {
+
                     const credits = { pro: 80, premium: 240 }
+
                     const clerkUserId = data?.payer?.user_id;
-                    const planId: keyof typeof credits = data?.subscription_items?.[0]?.plan?.slug;
+
+                    const planId = data?.subscription_items?.[0]?.plan?.slug as keyof typeof credits;
+
                     if (planId != "pro" && planId != "premium") {
                         return res.status(400).json({ message: "Invalid plan" })
                     }
+
                     console.log(planId)
+
                     await prisma.user.update({
-                        where :{id : clerkUserId},
-                        data:{
-                            credits : {increment: credits[planId]}
+                        where: { id: clerkUserId },
+                        data: {
+                            credits: { increment: credits[planId] }
                         }
                     })
                 }
                 break;
             }
 
-
             default:
                 break;
         }
-        return res.json({ message: "Webhook received: " + eventType })
 
-    } catch (error : any) {
-        const message = error?.message || "Webhook processing failed";
-        const status = /signature|svix|webhook/i.test(message) ? 401 : 500;
-        const meta = {
-            hasSvixId: Boolean(req.get("svix-id")),
-            hasSvixTimestamp: Boolean(req.get("svix-timestamp")),
-            hasSvixSignature: Boolean(req.get("svix-signature")),
-            contentType: req.get("content-type") || "unknown",
-            bodyType: Buffer.isBuffer(req.body) ? "buffer" : typeof req.body,
-        };
-        console.error("Webhook error:", message, meta);
-        return res.status(status).json({ message, type });
+        res.json({ message: " Webhook Recived : " + type })
+
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
     }
 }
 
