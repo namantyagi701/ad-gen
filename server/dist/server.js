@@ -4,8 +4,10 @@ import cors from "cors";
 import { clerkMiddleware } from '@clerk/express';
 import clerkWebhooks from "./controllers/clerk.js";
 const app = express();
-// Middleware
-app.use(cors());
+app.use(cors({
+    origin: ['https://hm805vp3-5173.inc1.devtunnels.ms', 'http://localhost:5173'],
+    credentials: true
+}));
 app.post('/api/clerk', express.raw({ type: '*/*' }), clerkWebhooks);
 app.use(express.json());
 app.use(clerkMiddleware());

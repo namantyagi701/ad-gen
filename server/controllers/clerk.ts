@@ -7,7 +7,12 @@ const clerkWebhooks = async (req: Request, res: Response) => {
     console.log("Webhook request received")
     let type = "unknown";
     try {
-        const evt: any = await verifyWebhook(req)
+        const signingSecret = process.env.CLERK_WEBHOOK_SIGNING_SECRET?.trim()
+        if (!signingSecret) {
+            return res.status(500).json({ message: "Missing CLERK_WEBHOOK_SIGNING_SECRET in server environment" })
+        }
+
+        const evt: any = await verifyWebhook(req, { signingSecret })
         //get data from request
         const { data, type: eventType } = evt;
         type = eventType;
@@ -72,7 +77,14 @@ const clerkWebhooks = async (req: Request, res: Response) => {
     } catch (error : any) {
         const message = error?.message || "Webhook processing failed";
         const status = /signature|svix|webhook/i.test(message) ? 401 : 500;
-        console.error("Webhook error:", message);
+        const meta = {
+            hasSvixId: Boolean(req.get("svix-id")),
+            hasSvixTimestamp: Boolean(req.get("svix-timestamp")),
+            hasSvixSignature: Boolean(req.get("svix-signature")),
+            contentType: req.get("content-type") || "unknown",
+            bodyType: Buffer.isBuffer(req.body) ? "buffer" : typeof req.body,
+        };
+        console.error("Webhook error:", message, meta);
         return res.status(status).json({ message, type });
     }
 }
