@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { verifyWebhook } from '@clerk/express/webhooks'
 import { prisma } from '../configs/prisma.js'
+import * as Sentry from "@sentry/node"
 
 const clerkWebhooks = async (req: Request, res: Response) => {
     console.log("Webhook request received")
@@ -45,7 +46,9 @@ const clerkWebhooks = async (req: Request, res: Response) => {
             }
 
             case "user.deleted": {
-                await prisma.user.delete({ where: { id: data.id } })
+                await prisma.user.deleteMany({
+                    where: { id: data.id }
+                })
                 break;
             }
 
@@ -77,10 +80,10 @@ const clerkWebhooks = async (req: Request, res: Response) => {
             default:
                 break;
         }
-
-        res.json({ message: " Webhook Recived : " + type })
+        return res.status(200).json({ received: true })  
 
     } catch (error: any) {
+        Sentry.captureException(error)
         res.status(500).json({ message: error.message });
     }
 }
