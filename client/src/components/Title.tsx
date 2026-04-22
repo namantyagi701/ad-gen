@@ -16,13 +16,13 @@ export default function Title({ title, heading, description }: TitleProps) {
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1 }}
-                    className="text-sm font-medium text-violet-400 uppercase tracking-wide mb-3"
+                    className="text-sm font-medium text-gray-400 uppercase tracking-wide mb-3"
                 >
                     {title}
                 </motion.p>
             )}
             {heading && (
-                <motion.h2 className="text-2xl md:text-4xl text-white font-semibold"
+                <motion.h2 className="text-2xl md:text-4xl text-gray-900 font-semibold"
                     initial={{ y: 60, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     viewport={{ once: true }}

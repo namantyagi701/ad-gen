@@ -3,8 +3,13 @@ import Title from "../components/Title"
 import UploadZone from "../components/UploadZone"
 import { LoaderIcon, RectangleHorizontalIcon, RectangleVerticalIcon, Wand2Icon } from "lucide-react"
 import { PrimaryButton } from "../components/Buttons"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "@clerk/clerk-react"
+import { BACKEND_URL } from "../types"
 
 const Generator = () => {
+  const navigate = useNavigate()
+  const { getToken } = useAuth()
 
   const [name, setName] = useState('')
   const [productName, setProductName] = useState('')
@@ -24,11 +29,49 @@ const Generator = () => {
 
   const handleGenerate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!productImage || !modelImage) {
+      alert('Please upload both product and model images')
+      return
+    }
+
+    setIsGenerating(true)
+    try {
+      const token = await getToken()
+      const formData = new FormData()
+      formData.append('name', name || 'New Project')
+      formData.append('productName', productName)
+      formData.append('productDescription', productDescription)
+      formData.append('aspectRatio', aspectRatio)
+      formData.append('userPrompt', userPrompt)
+      formData.append('images', productImage)
+      formData.append('images', modelImage)
+
+      const res = await fetch(`${BACKEND_URL}/api/project/create`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formData,
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        navigate(`/result/${data.project.id}`)
+      } else {
+        alert(data.message || 'Something went wrong')
+      }
+    } catch (error: any) {
+      alert(error.message || 'Failed to create project')
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
 
   return (
-    <div className="min-h-screen text-white p-6 md:p-12 mt-28">
+    <div className="min-h-screen p-6 md:p-12 mt-28">
 
       <form onSubmit={handleGenerate} className="max-w-4xl mx-auto mb-40" >
 
@@ -44,35 +87,35 @@ const Generator = () => {
 
           {/* right col */}
           <div className="w-full">
-            <div className="mb-4 text-gray-300">
+            <div className="mb-4 text-gray-600">
               <label htmlFor="name" className="block text-sm mb-4">Project Name</label>
-              <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name your project" required className="w-full bg-white/3 rounded-lg border-2 p-4 text-sm border-violet-200/10 focus:border-violet-500/50 outline-none transition-all" />
+              <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name your project" required className="w-full bg-black/2 rounded-lg border-2 p-4 text-sm border-black/8 focus:border-gray-900/50 outline-none transition-all text-gray-900" />
             </div>
 
-            <div className="mb-4 text-gray-300">
+            <div className="mb-4 text-gray-600">
               <label htmlFor="productName" className="block text-sm mb-4">Product Name</label>
-              <input type="text" id="productName" value={productName} onChange={(e) => setProductName(e.target.value)} placeholder="Enter the name of the product" required className="w-full bg-white/3 rounded-lg border-2 p-4 text-sm border-violet-200/10 focus:border-violet-500/50 outline-none transition-all" />
+              <input type="text" id="productName" value={productName} onChange={(e) => setProductName(e.target.value)} placeholder="Enter the name of the product" required className="w-full bg-black/2 rounded-lg border-2 p-4 text-sm border-black/8 focus:border-gray-900/50 outline-none transition-all text-gray-900" />
             </div>
 
-            <div className="mb-4 text-gray-300">
-              <label htmlFor="productDescription" className="block text-sm mb-4">Product Description <span className="text-xs text-violet-400">(optional)</span> </label>
-              <textarea id="productDescription" rows={4} value={productDescription} onChange={(e) => setProductDescription(e.target.value)} placeholder="Enter the description" className="w-full bg-white/3 rounded-lg border-2 p-4 text-sm border-violet-200/10 focus:border-violet-500/50 outline-none resize-none transition-all"></textarea>
+            <div className="mb-4 text-gray-600">
+              <label htmlFor="productDescription" className="block text-sm mb-4">Product Description <span className="text-xs text-gray-400">(optional)</span> </label>
+              <textarea id="productDescription" rows={4} value={productDescription} onChange={(e) => setProductDescription(e.target.value)} placeholder="Enter the description" className="w-full bg-black/2 rounded-lg border-2 p-4 text-sm border-black/8 focus:border-gray-900/50 outline-none resize-none transition-all text-gray-900"></textarea>
             </div>
 
-            <div className="mb-4 text-gray-300">
+            <div className="mb-4 text-gray-600">
 
               <label className="block text-sm mb-4">Aspect Ratio</label>
               <div className="flex gap-3">
                 <RectangleVerticalIcon onClick={() => setAspectRatio('9:16')}
-                  className={`p-2.5 size-13 bg-white/6 rounded transition-all ring-2 ring-transparent cursor-pointer ${aspectRatio === '9:16' ? 'ring-violet-500/50 bg-white/10' : ''}`} />
+                  className={`p-2.5 size-13 bg-black/4 rounded transition-all ring-2 ring-transparent cursor-pointer text-gray-700 ${aspectRatio === '9:16' ? 'ring-gray-900/50 bg-black/8' : ''}`} />
                 <RectangleHorizontalIcon onClick={() => setAspectRatio('16:9')}
-                  className={`p-2.5 size-13 bg-white/6 rounded transition-all ring-2 ring-transparent cursor-pointer ${aspectRatio === '16:9' ? 'ring-violet-500/50 bg-white/10' : ''}`} />
+                  className={`p-2.5 size-13 bg-black/4 rounded transition-all ring-2 ring-transparent cursor-pointer text-gray-700 ${aspectRatio === '16:9' ? 'ring-gray-900/50 bg-black/8' : ''}`} />
               </div>
             </div>
 
-            <div className="mb-4 text-gray-300">
-              <label htmlFor="userPrompt" className="block text-sm mb-4">User Prompt <span className="text-xs text-violet-400">(optional)</span> </label>
-              <textarea id="userPrompt" rows={4} value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)} placeholder="Give a prompt" className="w-full bg-white/3 rounded-lg border-2 p-4 text-sm border-violet-200/10 focus:border-violet-500/50 outline-none resize-none transition-all"></textarea>
+            <div className="mb-4 text-gray-600">
+              <label htmlFor="userPrompt" className="block text-sm mb-4">User Prompt <span className="text-xs text-gray-400">(optional)</span> </label>
+              <textarea id="userPrompt" rows={4} value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)} placeholder="Give a prompt" className="w-full bg-black/2 rounded-lg border-2 p-4 text-sm border-black/8 focus:border-gray-900/50 outline-none resize-none transition-all text-gray-900"></textarea>
             </div>
 
           </div>

@@ -1,4 +1,4 @@
-import type React from "react";
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 export interface UploadZoneProps{
     label: string;
@@ -24,6 +24,7 @@ export interface Project{
     userPrompt: string;
     aspectRatio : string;
     targetLength?: number;
+    adScript?: string;
     generatedImage?: string;
     generatedVideo?: string;
     isGenerating ?: boolean;

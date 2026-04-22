@@ -32,7 +32,7 @@ export default function Hero() {
                 <div className="max-w-6xl mx-auto px-4 min-h-screen max-md:w-screen max-md:overflow-hidden pt-32 md:pt-26 flex items-center justify-center">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                         <div className="text-left">
-                            <motion.a href="https://prebuiltui.com/tailwind-templates?ref=pixel-forge" className="inline-flex items-center gap-3 pl-3 pr-4 py-1.5 rounded-full bg-white/10 mb-6 justify-start"
+                            <motion.a href="https://prebuiltui.com/tailwind-templates?ref=pixel-forge" className="inline-flex items-center gap-3 pl-3 pr-4 py-1.5 rounded-full bg-black/5 mb-6 justify-start"
                                 initial={{ y: 60, opacity: 0 }}
                                 whileInView={{ y: 0, opacity: 1 }}
                                 viewport={{ once: true }}
@@ -44,30 +44,30 @@ export default function Hero() {
                                             key={i}
                                             src={src}
                                             alt={`Client ${i + 1}`}
-                                            className="size-6 rounded-full border border-black/50"
+                                            className="size-6 rounded-full border border-white/50"
                                             width={40}
                                             height={40}
                                         />
                                     ))}
                                 </div>
-                                <span className="text-xs text-gray-200/90">
+                                <span className="text-xs text-gray-600">
                                     Trusted by 20k+ users
                                 </span>
                             </motion.a>
 
-                            <motion.h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6 max-w-xl"
+                            <motion.h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6 max-w-xl text-gray-900"
                                 initial={{ y: 60, opacity: 0 }}
                                 whileInView={{ y: 0, opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1, delay: 0.1 }}
                             >
                                 Create viral UGC<br />
-                                <span className="bg-clip-text text-transparent bg-linear-to-r from-indigo-300 to-indigo-400">
+                                <span className="bg-clip-text text-transparent bg-linear-to-r from-gray-900 to-gray-500">
                                     in seconds
                                 </span>
                             </motion.h1>
 
-                            <motion.p className="text-gray-300 max-w-lg mb-8"
+                            <motion.p className="text-gray-500 max-w-lg mb-8"
                                 initial={{ y: 60, opacity: 0 }}
                                 whileInView={{ y: 0, opacity: 1 }}
                                 viewport={{ once: true }}
@@ -82,7 +82,7 @@ export default function Hero() {
                                 viewport={{ once: true }}
                                 transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1, delay: 0.3 }}
                             >
-                                <a href="/" className="w-full sm:w-auto">
+                                <a href="/generate" className="w-full sm:w-auto">
                                     <PrimaryButton className="max-sm:w-full py-3 px-7">
                                         Start generating - it's free !
                                         <ArrowRightIcon className="size-4" />
@@ -95,14 +95,14 @@ export default function Hero() {
                                 </GhostButton>
                             </motion.div>
 
-                            <motion.div className="flex sm:inline-flex overflow-hidden items-center max-sm:justify-center text-sm text-gray-200 bg-white/10 rounded"
+                            <motion.div className="flex sm:inline-flex overflow-hidden items-center max-sm:justify-center text-sm text-gray-700 bg-black/4 rounded border border-black/6"
                                 initial={{ y: 60, opacity: 0 }}
                                 whileInView={{ y: 0, opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1, delay: 0.1 }}
                             >
-                                <div className="flex items-center gap-2 p-2 px-3 sm:px-6.5 hover:bg-white/3 transition-colors">
-                                    <ZapIcon className="size-4 text-sky-500" />
+                                <div className="flex items-center gap-2 p-2 px-3 sm:px-6.5 hover:bg-black/3 transition-colors">
+                                    <ZapIcon className="size-4 text-gray-900" />
                                     <div>
                                         <div>Seconds to create</div>
                                         <div className="text-xs text-gray-400">
@@ -111,10 +111,10 @@ export default function Hero() {
                                     </div>
                                 </div>
 
-                                <div className="hidden sm:block h-6 w-px bg-white/6" />
+                                <div className="hidden sm:block h-6 w-px bg-black/8" />
 
-                                <div className="flex items-center gap-2 p-2 px-3 sm:px-6.5 hover:bg-white/3 transition-colors">
-                                    <CheckIcon className="size-4 text-cyan-500" />
+                                <div className="flex items-center gap-2 p-2 px-3 sm:px-6.5 hover:bg-black/3 transition-colors">
+                                    <CheckIcon className="size-4 text-gray-900" />
                                     <div>
                                         <div>Commercial rights</div>
                                         <div className="text-xs text-gray-400">
@@ -132,20 +132,20 @@ export default function Hero() {
                             viewport={{ once: true }}
                             transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1, delay: 0.5 }}
                         >
-                            <motion.div className="rounded-3xl overflow-hidden border border-white/6 shadow-2xl bg-linear-to-b from-black/50 to-transparent">
-                                <div className="relative aspect-16/10 bg-gray-900">
+                            <motion.div className="rounded-3xl overflow-hidden border border-black/8 shadow-2xl bg-linear-to-b from-gray-50 to-transparent">
+                                <div className="relative aspect-16/10 bg-gray-100">
                                     <img
                                         src={mainImageUrl}
                                         alt="agency-work-preview"
                                         className="w-full h-full object-cover object-center"
                                     />
 
-                                    <div className="absolute left-4 top-4 px-3 py-1 rounded-full bg-black/15 backdrop-blur-sm text-xs">
+                                    <div className="absolute left-4 top-4 px-3 py-1 rounded-full bg-white/70 backdrop-blur-sm text-xs text-gray-800">
                                         Social-ready• 9:16 & 16:9
                                     </div>
 
                                     <div className="absolute right-4 bottom-4">
-                                        <button className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-white/6 backdrop-blur-sm hover:bg-white/10 transition focus:outline-none">
+                                        <button className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-black/10 backdrop-blur-sm hover:bg-black/20 transition focus:outline-none text-white">
                                             <PlayIcon className="size-4" />
                                             <span className="text-xs">Preview</span>
                                         </button>
@@ -161,7 +161,7 @@ export default function Hero() {
                                         whileInView={{ y: 0, opacity: 1 }}
                                         viewport={{ once: true }}
                                         transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1, delay: 0.1 + i * 0.1 }}
-                                        className="w-14 h-10 rounded-lg overflow-hidden border border-white/6"
+                                        className="w-14 h-10 rounded-lg overflow-hidden border border-black/8"
                                     >
                                         <img
                                             src={src}
@@ -177,9 +177,9 @@ export default function Hero() {
                                     transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1, delay: 0.2 }}
                                 >
                                     <div className="relative flex h-3.5 w-3.5 items-center justify-center">
-                                        <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping duration-300" />
+                                        <span className="absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-75 animate-ping duration-300" />
 
-                                        <span className="relative inline-flex size-2 rounded-full bg-green-600" />
+                                        <span className="relative inline-flex size-2 rounded-full bg-gray-600" />
                                     </div>
                                     +20 more
                                 </motion.div>
@@ -190,7 +190,7 @@ export default function Hero() {
             </section>
 
             {/* LOGO MARQUEE */}
-            <motion.section className="border-y border-white/6 bg-white/1 max-md:mt-10"
+            <motion.section className="border-y border-black/6 bg-black/2 max-md:mt-10"
                 initial={{ y: 60, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true }}
@@ -202,7 +202,7 @@ export default function Hero() {
                             {trustedLogosText.concat(trustedLogosText).map((logo, i) => (
                                 <span
                                     key={i}
-                                    className="mx-6 text-sm md:text-base font-semibold text-gray-400 hover:text-gray-300 tracking-wide transition-colors"
+                                    className="mx-6 text-sm md:text-base font-semibold text-gray-400 hover:text-gray-600 tracking-wide transition-colors"
                                 >
                                     {logo}
                                 </span>

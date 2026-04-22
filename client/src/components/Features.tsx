@@ -29,16 +29,16 @@ export default function Features() {
                             onAnimationComplete={() => {
                                 const card = refs.current[i];
                                 if (card) {
-                                    card.classList.add("transition", "duration-300", "hover:border-white/15", "hover:-translate-y-1");
+                                    card.classList.add("transition", "duration-300", "hover:border-black/15", "hover:-translate-y-1");
                                 }
                             }}
-                            className="rounded-2xl p-6 bg-white/3 border border-white/6"
+                            className="rounded-2xl p-6 bg-black/2 border border-black/6"
                         >
-                            <div className="w-12 h-12 rounded-lg bg-violet-900/20 flex items-center justify-center mb-4">
+                            <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center mb-4">
                                 {feature.icon}
                             </div>
                             <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                            <p className="text-gray-300 text-sm leading-relaxed">
+                            <p className="text-gray-500 text-sm leading-relaxed">
                                 {feature.desc}
                             </p>
                         </motion.div>

@@ -5,16 +5,16 @@ import { motion } from 'framer-motion';
 export default function Footer() {
 
     return (
-        <motion.footer className="bg-white/6 border-t border-white/6 pt-10 text-gray-300"
+        <motion.footer className="bg-gray-950 border-t border-gray-800 pt-10 text-gray-400"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ type: "spring", duration: 0.5 }}
         >
             <div className="max-w-6xl mx-auto px-6">
-                <div className="flex flex-col md:flex-row items-start justify-between gap-10 py-10 border-b border-white/10">
+                <div className="flex flex-col md:flex-row items-start justify-between gap-10 py-10 border-b border-gray-800">
                     <div>
-                        <img src={assets.logo} alt="logo" className="h-8" />
+                        <img src={assets.logo} alt="logo" className="h-12 invert" />
                         <p className="max-w-[410px] mt-6 text-sm leading-relaxed">
                             We are a digital agency focused on utilising AI.
                         </p>
@@ -45,7 +45,7 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <p className="py-4 text-center text-sm text-gray-400">
+                <p className="py-4 text-center text-sm text-gray-500">
                     © {new Date().getFullYear()} {' '}
                     . All rights reserved.
                 </p>

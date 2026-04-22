@@ -37,6 +37,7 @@ model Project {
   aspectRatio        String   @default("9:16")
   targetLength       Int      @default(5)
   uploadedImages     String[]
+  adScript           String   @default("")
   generatedImage     String   @default("")
   generatedVideo     String   @default("")
   isGenerating       Boolean  @default(false)
